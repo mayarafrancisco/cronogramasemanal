@@ -1,0 +1,635 @@
+
+<style>
+:root{
+  --planner-bg:#f6f7f9;
+  --planner-surface:#ffffff;
+  --planner-surface-soft:#fbfbfc;
+  --planner-border:#e4e7ec;
+  --planner-border-strong:#d0d5dd;
+  --planner-text:#101828;
+  --planner-muted:#667085;
+  --planner-muted-2:#98a2b3;
+  --planner-focus:#111827;
+  --planner-shadow:0 1px 2px rgba(16,24,40,.05),0 12px 32px rgba(16,24,40,.08);
+  --planner-radius:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+.wrap{
+  width:100%;
+  max-width:1680px;
+  margin:0 auto;
+  padding:28px 18px 34px;
+  font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color:var(--planner-text);
+  background:
+    radial-gradient(circle at top left,rgba(17,24,39,.05),transparent 34%),
+    linear-gradient(180deg,#fbfbfc 0%,#f6f7f9 100%);
+}
+.header-row{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  margin-bottom:22px;
+  flex-wrap:wrap;
+  gap:18px;
+  padding:24px;
+  background:rgba(255,255,255,.88);
+  border:1px solid var(--planner-border);
+  border-radius:22px;
+  box-shadow:var(--planner-shadow);
+  backdrop-filter:blur(8px);
+}
+.header-row>div:first-child>div:first-child{
+  font-size:30px!important;
+  line-height:1.1!important;
+  font-weight:750!important;
+  letter-spacing:-.035em!important;
+  color:var(--planner-text)!important;
+  margin-bottom:10px!important;
+}
+.header-row>div:first-child>div:first-child::after{
+  content:"Planejamento editorial semanal";
+  display:block;
+  margin-top:7px;
+  font-size:15px;
+  line-height:1.4;
+  font-weight:500;
+  letter-spacing:0;
+  color:var(--planner-muted);
+}
+.semana-input{
+  border:1px solid var(--planner-border-strong);
+  border-radius:14px;
+  padding:12px 14px;
+  min-height:46px;
+  font-size:16px;
+  font-weight:600;
+  font-family:inherit;
+  background:var(--planner-surface);
+  color:var(--planner-text);
+  box-shadow:0 1px 1px rgba(16,24,40,.03);
+  transition:border-color .18s, box-shadow .18s, background .18s;
+}
+.semana-input:focus{
+  outline:none;
+  border-color:#111827;
+  box-shadow:0 0 0 4px rgba(17,24,39,.08);
+}
+.header-row span{font-size:15px!important;color:var(--planner-muted)!important;font-weight:600}
+.expand-all{
+  font-size:15px;
+  color:var(--planner-muted);
+  cursor:pointer;
+  background:#fff;
+  border:1px solid var(--planner-border);
+  border-radius:999px;
+  font-family:inherit;
+  padding:10px 14px;
+  font-weight:650;
+  text-decoration:none;
+  transition:all .18s ease;
+}
+.expand-all:hover{color:var(--planner-text);border-color:var(--planner-border-strong);transform:translateY(-1px);box-shadow:0 5px 14px rgba(16,24,40,.07)}
+.redes-toggle{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}
+.wrap>div:nth-of-type(2){
+  margin-bottom:22px!important;
+  padding:18px 20px;
+  background:rgba(255,255,255,.72);
+  border:1px solid var(--planner-border);
+  border-radius:18px;
+}
+.wrap>div:nth-of-type(2)>div:first-child{
+  font-size:13px!important;
+  color:var(--planner-muted)!important;
+  margin-bottom:12px!important;
+  text-transform:uppercase;
+  letter-spacing:.09em!important;
+  font-weight:800!important;
+}
+.rede-btn{
+  position:relative;
+  border:1px solid var(--planner-border);
+  border-radius:999px;
+  padding:11px 16px 11px 34px;
+  min-height:44px;
+  font-size:15px;
+  font-family:inherit;
+  background:#fff;
+  color:var(--planner-muted);
+  cursor:pointer;
+  transition:all .18s ease;
+  font-weight:650;
+  box-shadow:0 1px 1px rgba(16,24,40,.03);
+}
+.rede-btn::before{
+  content:"";
+  position:absolute;
+  left:14px;
+  top:50%;
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:var(--dot,#98a2b3);
+  transform:translateY(-50%);
+  opacity:.75;
+}
+.rede-btn:hover{transform:translateY(-1px);border-color:var(--planner-border-strong);box-shadow:0 6px 16px rgba(16,24,40,.06)}
+.rede-btn.ativa{
+  background:#111827;
+  color:#fff;
+  border-color:#111827;
+  font-weight:750;
+  box-shadow:0 10px 22px rgba(17,24,39,.18);
+}
+.rede-btn.ativa::before{opacity:1;box-shadow:0 0 0 3px rgba(255,255,255,.18)}
+.dia-block{
+  background:var(--planner-surface);
+  border:1px solid var(--planner-border);
+  border-radius:var(--planner-radius);
+  margin-bottom:18px;
+  overflow:hidden;
+  box-shadow:0 1px 2px rgba(16,24,40,.04),0 10px 26px rgba(16,24,40,.055);
+}
+.dia-header{
+  min-height:68px;
+  padding:18px 22px;
+  background:linear-gradient(180deg,#fff 0%,#f9fafb 100%);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  cursor:pointer;
+  user-select:none;
+  border-bottom:1px solid var(--planner-border);
+}
+.dia-nome{
+  font-size:22px;
+  line-height:1.2;
+  font-weight:780;
+  letter-spacing:-.02em;
+  color:var(--planner-text);
+}
+.dia-data{
+  font-size:16px;
+  font-weight:700;
+  color:var(--planner-muted);
+  padding:7px 10px;
+  border:1px solid var(--planner-border);
+  background:#fff;
+  border-radius:999px;
+}
+.dia-body{display:none;background:#fff}
+.dia-body.aberto{display:block}
+.col-headers-row,
+.rede-row{
+  display:grid;
+  grid-template-columns:minmax(145px,.65fr) minmax(170px,.75fr) minmax(360px,2.2fr) minmax(180px,.8fr) minmax(300px,1.45fr);
+}
+.col-headers-row{
+  border-top:0;
+  background:#f8fafc;
+  position:sticky;
+  top:0;
+  z-index:1;
+}
+.col-header{
+  padding:14px 16px;
+  font-size:13px;
+  line-height:1.2;
+  font-weight:850;
+  color:var(--planner-muted);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  border-right:1px solid var(--planner-border);
+  border-bottom:1px solid var(--planner-border);
+  background:#f8fafc;
+}
+.col-header:last-child{border-right:none}
+.rede-row{
+  gap:0;
+  border-top:0;
+  min-height:96px;
+  background:#fff;
+  transition:background .12s ease;
+}
+.rede-row:nth-child(odd){background:#fcfcfd}
+.rede-row:hover{background:#f9fafb}
+.cell{
+  padding:16px;
+  font-size:16px;
+  line-height:1.5;
+  color:var(--planner-text);
+  border-right:1px solid var(--planner-border);
+  border-bottom:1px solid var(--planner-border);
+  display:flex;
+  align-items:center;
+}
+.cell:last-child{border-right:none}
+.rede-label{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  min-height:40px;
+  padding:9px 13px;
+  border:1px solid var(--planner-border);
+  border-radius:999px;
+  background:#fff;
+  font-size:16px;
+  line-height:1;
+  font-weight:750;
+  color:var(--planner-text);
+  box-shadow:0 1px 2px rgba(16,24,40,.04);
+  white-space:nowrap;
+}
+.rede-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;box-shadow:0 0 0 3px rgba(16,24,40,.06)}
+.tipo-select,.status-select,
+.tema-input,.obs-input{
+  width:100%;
+  border:1px solid var(--planner-border-strong);
+  border-radius:14px;
+  background:#fff;
+  color:var(--planner-text);
+  font-family:inherit;
+  transition:border-color .18s, box-shadow .18s, background .18s;
+}
+.tipo-select,.status-select{
+  min-height:48px;
+  padding:10px 12px;
+  font-size:16px;
+  line-height:1.25;
+  font-weight:650;
+  appearance:auto;
+}
+.tipo-select:focus,.status-select:focus,
+.tema-input:focus,.obs-input:focus{
+  outline:none;
+  border-color:#111827;
+  box-shadow:0 0 0 4px rgba(17,24,39,.08);
+  background:#fff;
+}
+.tema-input,.obs-input{
+  min-height:94px;
+  padding:14px 15px;
+  font-size:17px;
+  line-height:1.55;
+  resize:vertical;
+}
+.tema-input::placeholder,.obs-input::placeholder{color:#98a2b3}
+.status-wrap{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:8px;
+  border:1px solid var(--planner-border);
+  border-radius:16px;
+  background:#f8fafc;
+}
+.status-dot{
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  flex-shrink:0;
+  box-shadow:0 0 0 4px rgba(16,24,40,.06);
+}
+.chevron{
+  font-size:18px;
+  color:var(--planner-muted);
+  transition:transform .2s, color .18s;
+}
+.chevron.open{transform:rotate(180deg);color:var(--planner-text)}
+.footer-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:24px;
+  flex-wrap:wrap;
+  gap:16px;
+  padding:18px 20px;
+  background:#fff;
+  border:1px solid var(--planner-border);
+  border-radius:18px;
+  box-shadow:0 1px 2px rgba(16,24,40,.04);
+}
+.btn{
+  border:1px solid var(--planner-border-strong);
+  border-radius:14px;
+  padding:12px 18px;
+  min-height:46px;
+  font-size:16px;
+  font-family:inherit;
+  background:#fff;
+  color:var(--planner-text);
+  cursor:pointer;
+  font-weight:750;
+  transition:all .18s ease;
+}
+.btn:hover{background:#f9fafb;transform:translateY(-1px);box-shadow:0 8px 18px rgba(16,24,40,.07)}
+.btn-pri{
+  border-color:#111827;
+  background:#111827;
+  color:#fff;
+  box-shadow:0 10px 24px rgba(17,24,39,.18);
+}
+.btn-pri:hover{background:#1f2937;color:#fff}
+.legenda{display:flex;gap:10px;flex-wrap:wrap}
+.leg{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-height:34px;
+  padding:7px 10px;
+  border:1px solid var(--planner-border);
+  border-radius:999px;
+  background:#fff;
+  font-size:14px;
+  line-height:1;
+  font-weight:700;
+  color:var(--planner-muted);
+}
+.leg-dot{width:10px;height:10px;border-radius:50%;box-shadow:0 0 0 3px rgba(16,24,40,.05)}
+@media(max-width:1180px){
+  .wrap{padding:18px 12px}
+  .col-headers-row{display:none}
+  .rede-row{display:block;min-height:auto;padding:14px 14px 4px;border-bottom:1px solid var(--planner-border)}
+  .cell{border:0;padding:8px 0;display:block}
+  .cell::before{display:block;margin-bottom:7px;font-size:12px;font-weight:850;letter-spacing:.08em;text-transform:uppercase;color:var(--planner-muted)}
+  .cell:nth-child(1)::before{content:"Rede"}
+  .cell:nth-child(2)::before{content:"Formato"}
+  .cell:nth-child(3)::before{content:"Tema / pauta"}
+  .cell:nth-child(4)::before{content:"Status"}
+  .cell:nth-child(5)::before{content:"Observação"}
+  .tema-input,.obs-input{min-height:110px}
+}
+</style>
+
+<div class="wrap">
+<h2 class="sr-only">Calendário de briefing semanal de conteúdo organizado por dia</h2>
+
+<div class="header-row">
+  <div>
+    <div style="font-size:16px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px">Briefing semanal</div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:4px">
+      <input type="date" class="semana-input" id="data-inicio">
+      <span style="font-size:12px;color:var(--color-text-secondary)">até</span>
+      <input type="date" class="semana-input" id="data-fim">
+    </div>
+  </div>
+  <div style="display:flex;gap:8px">
+    <button class="expand-all" onclick="toggleTodos(true)">expandir tudo</button>
+    <span style="font-size:11px;color:var(--color-border-secondary)">|</span>
+    <button class="expand-all" onclick="toggleTodos(false)">recolher tudo</button>
+  </div>
+</div>
+
+<div style="margin-bottom:1rem">
+  <div style="font-size:10px;color:var(--color-text-secondary);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;font-weight:500">redes ativas</div>
+  <div class="redes-toggle" id="redes-btns"></div>
+</div>
+
+<div id="dias-container"></div>
+
+<div class="footer-row">
+  <div class="legenda" id="legenda"></div>
+  <div style="display:flex;gap:8px">
+    <button class="btn" onclick="limparTudo()">Limpar tudo</button>
+    <button class="btn btn-pri" onclick="exportar()">Copiar resumo ↗</button>
+  </div>
+</div>
+
+</div>
+
+<script>
+const DIAS=[
+  {label:'Segunda-feira',short:'Seg'},
+  {label:'Terça-feira',short:'Ter'},
+  {label:'Quarta-feira',short:'Qua'},
+  {label:'Quinta-feira',short:'Qui'},
+  {label:'Sexta-feira',short:'Sex'},
+  {label:'Sábado',short:'Sáb'},
+  {label:'Domingo',short:'Dom'},
+];
+
+const REDES_CONFIG=[
+  {nome:'Instagram',cor:'#a855f7'},
+  {nome:'TikTok',cor:'#3b82f6'},
+  {nome:'YouTube',cor:'#ef4444'},
+  {nome:'Threads',cor:'#1a1a2e'},
+  {nome:'Facebook',cor:'#2563eb'},
+  {nome:'X/Twitter',cor:'#06b6d4'},
+];
+
+const TIPOS=[
+  {val:'',label:'— formato —'},
+  {val:'reel',label:'Reel / Vídeo curto'},
+  {val:'react',label:'React / Reação'},
+  {val:'carrossel',label:'Carrossel'},
+  {val:'feed',label:'Foto / Feed'},
+  {val:'stories',label:'Stories'},
+  {val:'live',label:'Live'},
+  {val:'shorts',label:'Shorts / YT'},
+  {val:'thread',label:'Thread / Texto'},
+  {val:'repasse',label:'Repasse'},
+  {val:'sem-post',label:'Sem post'},
+];
+
+const STATUS=[
+  {val:'',label:'status'},
+  {val:'planejado',label:'planejado'},
+  {val:'briefing',label:'briefing feito'},
+  {val:'producao',label:'em produção'},
+  {val:'aprovacao',label:'para aprovação'},
+  {val:'agendado',label:'agendado'},
+  {val:'publicado',label:'publicado'},
+  {val:'cancelado',label:'cancelado'},
+];
+
+const STATUS_COLORS={
+  planejado:'#b4b2a9',
+  briefing:'#85b7eb',
+  producao:'#97c459',
+  aprovacao:'#ef9f27',
+  agendado:'#7f77dd',
+  publicado:'#1d9e75',
+  cancelado:'#f09595',
+};
+
+let redesAtivas=['Instagram','TikTok','YouTube','Threads'];
+let abertos=new Set([0,1,2,3,4]);
+let dados={};
+
+function getKey(dia,rede){return `${dia}-${rede}`}
+function getData(dia,rede,campo){const k=getKey(dia,rede);return dados[k]?dados[k][campo]||'':'';}
+function setData(dia,rede,campo,val){const k=getKey(dia,rede);if(!dados[k])dados[k]={};dados[k][campo]=val;}
+
+function renderRedes(){
+  const c=document.getElementById('redes-btns');
+  c.innerHTML='';
+  REDES_CONFIG.forEach(r=>{
+    const b=document.createElement('button');
+    b.className='rede-btn'+(redesAtivas.includes(r.nome)?' ativa':'');
+    b.textContent=r.nome;
+    b.dataset.rede=r.nome;
+    b.style.setProperty('--dot',r.cor);
+    b.onclick=()=>{
+      if(redesAtivas.includes(r.nome)){
+        if(redesAtivas.length===1)return;
+        redesAtivas=redesAtivas.filter(x=>x!==r.nome);
+        b.classList.remove('ativa');
+      } else {
+        redesAtivas.push(r.nome);
+        b.classList.add('ativa');
+      }
+      renderDias();
+    };
+    c.appendChild(b);
+  });
+}
+
+function getDataDia(diaIdx){
+  const ini=document.getElementById('data-inicio').value;
+  if(!ini)return '';
+  const d=new Date(ini+'T00:00:00');
+  d.setDate(d.getDate()+diaIdx);
+  return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});
+}
+
+function renderDias(){
+  const c=document.getElementById('dias-container');
+  c.innerHTML='';
+  DIAS.forEach((dia,i)=>{
+    const block=document.createElement('div');
+    block.className='dia-block';
+
+    const header=document.createElement('div');
+    header.className='dia-header';
+    const dataDia=getDataDia(i);
+    header.innerHTML=`<div class="dia-nome">${dia.label}</div><div style="display:flex;align-items:center;gap:10px"><div class="dia-data">${dataDia}</div><i class="ti ti-chevron-down chevron${abertos.has(i)?' open':''}" aria-hidden="true"></i></div>`;
+    header.onclick=()=>{
+      if(abertos.has(i))abertos.delete(i);else abertos.add(i);
+      body.classList.toggle('aberto');
+      header.querySelector('.chevron').classList.toggle('open');
+    };
+
+    const body=document.createElement('div');
+    body.className='dia-body'+(abertos.has(i)?' aberto':'');
+
+    const colRow=document.createElement('div');
+    colRow.className='col-headers-row';
+    ['rede','formato','tema / pauta','status','observação'].forEach(h=>{
+      const th=document.createElement('div');
+      th.className='col-header';
+      th.textContent=h;
+      colRow.appendChild(th);
+    });
+    body.appendChild(colRow);
+
+    const redesCfg=REDES_CONFIG.filter(r=>redesAtivas.includes(r.nome));
+    redesCfg.forEach((r,ri)=>{
+      const row=document.createElement('div');
+      row.className='rede-row';
+      if(ri===0)row.style.borderTop='none';
+
+      const tipo=getData(i,r.nome,'tipo');
+      const tema=getData(i,r.nome,'tema');
+      const status=getData(i,r.nome,'status');
+      const obs=getData(i,r.nome,'obs');
+      const statusColor=STATUS_COLORS[status]||'transparent';
+
+      row.innerHTML=`
+        <div class="cell"><div class="rede-label"><div class="rede-dot" style="background:${r.cor}"></div>${r.nome}</div></div>
+        <div class="cell">
+          <select class="tipo-select" data-dia="${i}" data-rede="${r.nome}" data-campo="tipo">
+            ${TIPOS.map(t=>`<option value="${t.val}"${tipo===t.val?' selected':''}>${t.label}</option>`).join('')}
+          </select>
+        </div>
+        <div class="cell"><textarea class="tema-input" rows="2" placeholder="pauta, ângulo, referência..." data-dia="${i}" data-rede="${r.nome}" data-campo="tema">${tema}</textarea></div>
+        <div class="cell">
+          <div class="status-wrap">
+            <div class="status-dot" style="background:${statusColor}"></div>
+            <select class="status-select" data-dia="${i}" data-rede="${r.nome}" data-campo="status">
+              ${STATUS.map(s=>`<option value="${s.val}"${status===s.val?' selected':''}>${s.label}</option>`).join('')}
+            </select>
+          </div>
+        </div>
+        <div class="cell"><textarea class="obs-input" rows="2" placeholder="link, quem faz, detalhe..." data-dia="${i}" data-rede="${r.nome}" data-campo="obs">${obs}</textarea></div>
+      `;
+      body.appendChild(row);
+    });
+
+    block.appendChild(header);
+    block.appendChild(body);
+    c.appendChild(block);
+  });
+
+  c.querySelectorAll('select,textarea').forEach(el=>{
+    el.addEventListener('change',e=>{
+      const d=e.target.dataset.dia,r=e.target.dataset.rede,campo=e.target.dataset.campo;
+      setData(d,r,campo,e.target.value);
+      if(campo==='status'){
+        const wrap=e.target.closest('.status-wrap');
+        if(wrap) wrap.querySelector('.status-dot').style.background=STATUS_COLORS[e.target.value]||'transparent';
+      }
+    });
+    el.addEventListener('input',e=>{
+      const d=e.target.dataset.dia,r=e.target.dataset.rede,campo=e.target.dataset.campo;
+      setData(d,r,campo,e.target.value);
+    });
+  });
+
+  renderLegenda();
+}
+
+function renderLegenda(){
+  const l=document.getElementById('legenda');
+  l.innerHTML=Object.entries(STATUS_COLORS).map(([k,c])=>`<div class="leg"><div class="leg-dot" style="background:${c}"></div>${k}</div>`).join('');
+}
+
+function toggleTodos(abrir){
+  DIAS.forEach((_,i)=>{abrir?abertos.add(i):abertos.delete(i);});
+  renderDias();
+}
+
+function limparTudo(){
+  if(confirm('Limpar todos os dados desta semana?')){dados={};renderDias();}
+}
+
+function exportar(){
+  let txt='BRIEFING SEMANAL\n';
+  const ini=document.getElementById('data-inicio').value;
+  const fim=document.getElementById('data-fim').value;
+  if(ini||fim) txt+=`Semana: ${ini||'?'} a ${fim||'?'}\n`;
+  txt+='\n';
+  DIAS.forEach((dia,i)=>{
+    const linhas=[];
+    REDES_CONFIG.filter(r=>redesAtivas.includes(r.nome)).forEach(r=>{
+      const tipo=getData(i,r.nome,'tipo');
+      const tema=getData(i,r.nome,'tema');
+      const status=getData(i,r.nome,'status');
+      const obs=getData(i,r.nome,'obs');
+      if(tipo||tema){
+        let l=`  ${r.nome}: [${tipo||'?'}] ${tema||'—'}`;
+        if(status) l+=` | ${status}`;
+        if(obs) l+=` | ${obs}`;
+        linhas.push(l);
+      }
+    });
+    if(linhas.length){
+      txt+=`${dia.label.toUpperCase()}\n${linhas.join('\n')}\n\n`;
+    }
+  });
+  try{navigator.clipboard.writeText(txt).then(()=>alert('Copiado!'));}catch(e){alert(txt);}
+}
+
+document.getElementById('data-inicio').addEventListener('change',renderDias);
+document.getElementById('data-fim').addEventListener('change',renderDias);
+
+const hoje=new Date();
+const seg=new Date(hoje);
+seg.setDate(hoje.getDate()-hoje.getDay()+1);
+const dom=new Date(seg);dom.setDate(seg.getDate()+6);
+document.getElementById('data-inicio').value=seg.toISOString().slice(0,10);
+document.getElementById('data-fim').value=dom.toISOString().slice(0,10);
+
+renderRedes();
+renderDias();
+</script>
