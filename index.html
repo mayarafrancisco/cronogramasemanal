@@ -360,6 +360,196 @@
   .cell:nth-child(5)::before{content:"Observação"}
   .tema-input,.obs-input{min-height:110px}
 }
+
+/* ===== UPGRADE PROFISSIONAL ===== */
+.dashboard-planner{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(150px,1fr));
+  gap:14px;
+  margin:0 0 22px;
+}
+.metric-card{
+  background:rgba(255,255,255,.9);
+  border:1px solid var(--planner-border);
+  border-radius:18px;
+  padding:16px 18px;
+  box-shadow:0 1px 2px rgba(16,24,40,.04),0 8px 22px rgba(16,24,40,.05);
+}
+.metric-label{
+  font-size:13px;
+  color:var(--planner-muted);
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+  margin-bottom:8px;
+}
+.metric-value{
+  font-size:32px;
+  line-height:1;
+  font-weight:850;
+  letter-spacing:-.04em;
+  color:var(--planner-text);
+}
+.metric-sub{
+  margin-top:8px;
+  font-size:14px;
+  color:var(--planner-muted);
+  font-weight:650;
+}
+.progress-box{
+  background:#fff;
+  border:1px solid var(--planner-border);
+  border-radius:18px;
+  padding:18px 20px;
+  margin:0 0 22px;
+  box-shadow:0 1px 2px rgba(16,24,40,.04);
+}
+.progress-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+}
+.progress-title{
+  font-size:17px;
+  font-weight:800;
+  letter-spacing:-.02em;
+}
+.progress-percent{
+  font-size:16px;
+  font-weight:850;
+  color:var(--planner-muted);
+}
+.progress-track{
+  height:12px;
+  border-radius:999px;
+  background:#eef2f7;
+  overflow:hidden;
+}
+.progress-fill{
+  height:100%;
+  width:0%;
+  border-radius:999px;
+  background:#111827;
+  transition:width .25s ease;
+}
+.tools-row{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+  margin:0 0 22px;
+  padding:16px;
+  background:rgba(255,255,255,.76);
+  border:1px solid var(--planner-border);
+  border-radius:18px;
+}
+.search-input{
+  flex:1;
+  min-width:260px;
+  min-height:46px;
+  border:1px solid var(--planner-border-strong);
+  border-radius:14px;
+  padding:11px 14px;
+  font-size:16px;
+  font-family:inherit;
+  color:var(--planner-text);
+  background:#fff;
+}
+.search-input:focus{
+  outline:none;
+  border-color:#111827;
+  box-shadow:0 0 0 4px rgba(17,24,39,.08);
+}
+.utility-btn{
+  border:1px solid var(--planner-border-strong);
+  border-radius:14px;
+  padding:12px 16px;
+  min-height:46px;
+  font-size:15px;
+  font-family:inherit;
+  background:#fff;
+  color:var(--planner-text);
+  cursor:pointer;
+  font-weight:780;
+  transition:all .18s ease;
+}
+.utility-btn:hover{
+  background:#f9fafb;
+  transform:translateY(-1px);
+  box-shadow:0 8px 18px rgba(16,24,40,.07);
+}
+.utility-btn.dark{
+  background:#111827;
+  color:#fff;
+  border-color:#111827;
+}
+.rede-row.hidden-by-search{
+  display:none!important;
+}
+body.dark-mode .wrap{
+  background:linear-gradient(180deg,#0f172a 0%,#111827 100%);
+  color:#f9fafb;
+}
+body.dark-mode .header-row,
+body.dark-mode .wrap>div:nth-of-type(2),
+body.dark-mode .dia-block,
+body.dark-mode .footer-row,
+body.dark-mode .metric-card,
+body.dark-mode .progress-box,
+body.dark-mode .tools-row{
+  background:#111827;
+  border-color:#374151;
+  color:#f9fafb;
+}
+body.dark-mode .dia-header,
+body.dark-mode .col-header,
+body.dark-mode .col-headers-row{
+  background:#1f2937;
+  border-color:#374151;
+}
+body.dark-mode .dia-body,
+body.dark-mode .rede-row,
+body.dark-mode .cell,
+body.dark-mode .rede-label,
+body.dark-mode .leg,
+body.dark-mode .dia-data,
+body.dark-mode .tipo-select,
+body.dark-mode .status-select,
+body.dark-mode .tema-input,
+body.dark-mode .obs-input,
+body.dark-mode .search-input,
+body.dark-mode .utility-btn,
+body.dark-mode .semana-input,
+body.dark-mode .status-wrap{
+  background:#0f172a;
+  color:#f9fafb;
+  border-color:#374151;
+}
+body.dark-mode .rede-row:nth-child(odd),
+body.dark-mode .rede-row:hover{
+  background:#111827;
+}
+body.dark-mode .metric-label,
+body.dark-mode .metric-sub,
+body.dark-mode .progress-percent,
+body.dark-mode .header-row>div:first-child>div:first-child::after{
+  color:#cbd5e1;
+}
+@media(max-width:1180px){
+  .dashboard-planner{grid-template-columns:repeat(2,minmax(150px,1fr))}
+}
+@media(max-width:640px){
+  .dashboard-planner{grid-template-columns:1fr}
+}
+@media print{
+  .redes-toggle,.tools-row,.footer-row,.expand-all{display:none!important}
+  .wrap{background:#fff!important;padding:0!important}
+  .dia-body{display:block!important}
+  .dia-block,.header-row,.metric-card,.progress-box{box-shadow:none!important}
+}
+
 </style>
 
 <div class="wrap">
@@ -384,6 +574,54 @@
 <div style="margin-bottom:1rem">
   <div style="font-size:10px;color:var(--color-text-secondary);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;font-weight:500">redes ativas</div>
   <div class="redes-toggle" id="redes-btns"></div>
+</div>
+
+
+<div class="dashboard-planner" id="dashboard-planner">
+  <div class="metric-card">
+    <div class="metric-label">Total</div>
+    <div class="metric-value" id="metric-total">0</div>
+    <div class="metric-sub">conteúdos preenchidos</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-label">Planejados</div>
+    <div class="metric-value" id="metric-planejado">0</div>
+    <div class="metric-sub">a organizar</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-label">Produção</div>
+    <div class="metric-value" id="metric-producao">0</div>
+    <div class="metric-sub">em andamento</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-label">Agendados</div>
+    <div class="metric-value" id="metric-agendado">0</div>
+    <div class="metric-sub">prontos para publicar</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-label">Publicados</div>
+    <div class="metric-value" id="metric-publicado">0</div>
+    <div class="metric-sub">concluídos</div>
+  </div>
+</div>
+
+<div class="progress-box">
+  <div class="progress-top">
+    <div class="progress-title">Progresso da semana</div>
+    <div class="progress-percent" id="progress-percent">0%</div>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="progress-fill"></div>
+  </div>
+</div>
+
+<div class="tools-row">
+  <input id="busca-planner" class="search-input" type="search" placeholder="Buscar pauta, rede, status ou observação...">
+  <button class="utility-btn" onclick="exportarPDF()">Salvar / imprimir PDF</button>
+  <button class="utility-btn" onclick="backupJSON()">Baixar backup</button>
+  <button class="utility-btn" onclick="document.getElementById('import-json').click()">Importar backup</button>
+  <input id="import-json" type="file" accept="application/json" style="display:none" onchange="importarJSON(event)">
+  <button class="utility-btn dark" onclick="alternarTema()">Modo escuro</button>
 </div>
 
 <div id="dias-container"></div>
@@ -464,6 +702,7 @@ function setData(dia,rede,campo,val){
   if(!dados[k]) dados[k]={};
   dados[k][campo]=val;
   localStorage.setItem('plannerDados', JSON.stringify(dados));
+  atualizarDashboard();
 }
 
 function renderRedes(){
@@ -584,6 +823,8 @@ function renderDias(){
   });
 
   renderLegenda();
+  atualizarDashboard();
+  aplicarBusca();
 }
 
 function renderLegenda(){
@@ -602,6 +843,7 @@ function limparTudo(){
     dados={};
     localStorage.removeItem('plannerDados');
     renderDias();
+    atualizarDashboard();
   }
 }
 
@@ -652,6 +894,136 @@ document.getElementById('data-inicio').value =
 document.getElementById('data-fim').value =
   localStorage.getItem('plannerDataFim') || dom.toISOString().slice(0,10);
 
+
+function atualizarDashboard(){
+  const counts={
+    total:0,
+    planejado:0,
+    briefing:0,
+    producao:0,
+    aprovacao:0,
+    agendado:0,
+    publicado:0,
+    cancelado:0
+  };
+
+  Object.values(dados).forEach(item=>{
+    if(item && (item.tipo || item.tema || item.status || item.obs)){
+      counts.total++;
+      if(item.status && counts[item.status]!==undefined){
+        counts[item.status]++;
+      }
+    }
+  });
+
+  const setMetric=(id,val)=>{
+    const el=document.getElementById(id);
+    if(el) el.textContent=val;
+  };
+
+  setMetric('metric-total',counts.total);
+  setMetric('metric-planejado',counts.planejado);
+  setMetric('metric-producao',counts.producao);
+  setMetric('metric-agendado',counts.agendado);
+  setMetric('metric-publicado',counts.publicado);
+
+  const concluidos=counts.publicado+counts.agendado;
+  const percent=counts.total ? Math.round((concluidos/counts.total)*100) : 0;
+
+  const pct=document.getElementById('progress-percent');
+  const fill=document.getElementById('progress-fill');
+
+  if(pct) pct.textContent=percent+'%';
+  if(fill) fill.style.width=percent+'%';
+}
+
+function aplicarBusca(){
+  const q=(document.getElementById('busca-planner')?.value || '').toLowerCase().trim();
+  document.querySelectorAll('.rede-row').forEach(row=>{
+    const txt=row.innerText.toLowerCase();
+    row.classList.toggle('hidden-by-search', q && !txt.includes(q));
+  });
+}
+
+function exportarPDF(){
+  window.print();
+}
+
+function backupJSON(){
+  const payload={
+    dados,
+    redesAtivas,
+    abertos:[...abertos],
+    dataInicio:document.getElementById('data-inicio').value,
+    dataFim:document.getElementById('data-fim').value,
+    exportadoEm:new Date().toISOString()
+  };
+
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download='backup-cronograma-semanal.json';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+function importarJSON(event){
+  const file=event.target.files[0];
+  if(!file)return;
+
+  const reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      const payload=JSON.parse(e.target.result);
+      if(payload.dados){
+        dados=payload.dados;
+        localStorage.setItem('plannerDados',JSON.stringify(dados));
+      }
+      if(payload.redesAtivas){
+        redesAtivas=payload.redesAtivas;
+        localStorage.setItem('plannerRedesAtivas',JSON.stringify(redesAtivas));
+      }
+      if(payload.abertos){
+        abertos=new Set(payload.abertos);
+        localStorage.setItem('plannerDiasAbertos',JSON.stringify([...abertos]));
+      }
+      if(payload.dataInicio){
+        document.getElementById('data-inicio').value=payload.dataInicio;
+        localStorage.setItem('plannerDataInicio',payload.dataInicio);
+      }
+      if(payload.dataFim){
+        document.getElementById('data-fim').value=payload.dataFim;
+        localStorage.setItem('plannerDataFim',payload.dataFim);
+      }
+      renderRedes();
+      renderDias();
+      atualizarDashboard();
+      alert('Backup importado com sucesso!');
+    }catch(err){
+      alert('Não foi possível importar o arquivo. Verifique se é um backup válido.');
+    }
+  };
+  reader.readAsText(file);
+}
+
+function alternarTema(){
+  document.body.classList.toggle('dark-mode');
+  localStorage.setItem('plannerTemaEscuro',document.body.classList.contains('dark-mode')?'1':'0');
+}
+
+if(localStorage.getItem('plannerTemaEscuro')==='1'){
+  document.body.classList.add('dark-mode');
+}
+
+document.addEventListener('input',e=>{
+  if(e.target && e.target.id==='busca-planner') aplicarBusca();
+});
+
+
 renderRedes();
 renderDias();
+atualizarDashboard();
 </script>
