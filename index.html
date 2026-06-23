@@ -618,6 +618,7 @@ body.dark-mode .header-row>div:first-child>div:first-child::after{
 <div class="tools-row">
   <input id="busca-planner" class="search-input" type="search" placeholder="Buscar pauta, rede, status ou observação...">
   <button class="utility-btn" onclick="exportarPDF()">Salvar / imprimir PDF</button>
+  <button class="utility-btn dark" onclick="enviarWhatsApp()">Enviar resumo pelo WhatsApp</button>
   <button class="utility-btn" onclick="backupJSON()">Baixar backup</button>
   <button class="utility-btn" onclick="document.getElementById('import-json').click()">Importar backup</button>
   <input id="import-json" type="file" accept="application/json" style="display:none" onchange="importarJSON(event)">
@@ -944,6 +945,58 @@ function aplicarBusca(){
     row.classList.toggle('hidden-by-search', q && !txt.includes(q));
   });
 }
+
+
+function gerarResumoWhatsApp(){
+  const ini=document.getElementById('data-inicio').value;
+  const fim=document.getElementById('data-fim').value;
+
+  let txt='*BRIEFING SEMANAL*%0A';
+  if(ini||fim){
+    txt+=`Semana: ${ini||'?'} a ${fim||'?'}%0A`;
+  }
+  txt+='%0A';
+
+  let encontrou=false;
+
+  DIAS.forEach((dia,i)=>{
+    const linhas=[];
+
+    REDES_CONFIG.filter(r=>redesAtivas.includes(r.nome)).forEach(r=>{
+      const tipo=getData(i,r.nome,'tipo');
+      const tema=getData(i,r.nome,'tema');
+      const status=getData(i,r.nome,'status');
+      const obs=getData(i,r.nome,'obs');
+
+      if(tipo||tema||status||obs){
+        encontrou=true;
+        let linha=`• *${r.nome}*`;
+        if(tipo) linha+=` | ${tipo}`;
+        if(status) linha+=` | ${status}`;
+        if(tema) linha+=`%0A  ${tema}`;
+        if(obs) linha+=`%0A  Obs: ${obs}`;
+        linhas.push(linha);
+      }
+    });
+
+    if(linhas.length){
+      txt+=`*${dia.label.toUpperCase()}*%0A${linhas.join('%0A%0A')}%0A%0A`;
+    }
+  });
+
+  if(!encontrou){
+    txt+='Ainda não há conteúdos preenchidos nesta semana.';
+  }
+
+  return txt;
+}
+
+function enviarWhatsApp(){
+  const resumo=gerarResumoWhatsApp();
+  const url='https://wa.me/?text='+resumo;
+  window.open(url,'_blank');
+}
+
 
 function exportarPDF(){
   window.print();
